@@ -1,5 +1,4 @@
 # KCF_3D
-3D generalization of Kernelized Correlation Filters for Summer of HPC project
 
 This is a 3D generalization of Kernelized Correlation Filters developed for Summer of HPC project
 
