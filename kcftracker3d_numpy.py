@@ -104,14 +104,14 @@ class KCFTracker:
             self.template_size = 1
             self.scale_step = 1
 
-        self._tmpl_sz = [0,0,0]  # cv::Size, [width,height,depth]  #[int,int]
-        self._roi = [0.,0.,0.,0.,0.,0.]  # cv::Rect2f, [x,y,z,width,height,depth]  #[float,float,float,float]
-        self.size_patch = [0,0,0]  #[int,int,int]
-        self._scale = 1.   # float
-        self._alphaf = None  # numpy.ndarray    (size_patch[0], size_patch[1], 2)
-        self._prob = None  # numpy.ndarray    (size_patch[0], size_patch[1], 2)
-        self._tmpl = None  # numpy.ndarray    raw: (size_patch[0], size_patch[1])   hog: (size_patch[2], size_patch[0]*size_patch[1])
-        self.hann = None  # numpy.ndarray    raw: (size_patch[0], size_patch[1])   hog: (size_patch[2], size_patch[0]*size_patch[1])
+        self._tmpl_sz = [0,0,0]  
+        self._roi = [0.,0.,0.,0.,0.,0.] 
+        self.size_patch = [0,0,0]  
+        self._scale = 1.   
+        self._alphaf = None  
+        self._prob = None  
+        self._tmpl = None  
+        self.hann = None  
 
     def subPixelPeak(self, left, center, right):
         divisor = 2*center - right - left   #float
@@ -180,9 +180,9 @@ class KCFTracker:
                 self._tmpl_sz[2] = int(padded_d)
                 self._scale = 1.
 
-            self._tmpl_sz[0] = int(self._tmpl_sz[0])# / 2 * 2
-            self._tmpl_sz[1] = int(self._tmpl_sz[1])# / 2 * 2
-            self._tmpl_sz[2] = int(self._tmpl_sz[2])# / 2 * 2
+            self._tmpl_sz[0] = int(self._tmpl_sz[0])
+            self._tmpl_sz[1] = int(self._tmpl_sz[1])
+            self._tmpl_sz[2] = int(self._tmpl_sz[2])
 
         extracted_roi[3] = int(scale_adjust * self._scale * self._tmpl_sz[0])
         extracted_roi[4] = int(scale_adjust * self._scale * self._tmpl_sz[1])
@@ -218,7 +218,7 @@ class KCFTracker:
 
         pv = np.max(res)
         pi = list(np.unravel_index(res.argmax(), res.shape))[::-1]
-        p = [float(pi[0]), float(pi[1]), float(pi[2])]   # cv::Point2f, [x,y]  #[float,float]
+        p = [float(pi[0]), float(pi[1]), float(pi[2])]
 
         if(pi[0]>0 and pi[0]<res.shape[2]-1):
             p[0] += self.subPixelPeak(res[pi[2]  ,pi[1]  ,pi[0]-1], pv, res[pi[2]  ,pi[1]  ,pi[0]+1])
