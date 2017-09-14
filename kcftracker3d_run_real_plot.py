@@ -58,7 +58,7 @@ tracker.sigma = 0.05
 tracker.init(bbox, rec001)
 boxlist = [bbox]
 #%%
-draw_xyz = False
+draw_xyz = True
 n_iter = 5
 for j,filename in enumerate(filenames):
     print("Loading data...")
@@ -81,8 +81,8 @@ for j,filename in enumerate(filenames):
         frame = drawbox(current_rec,bb,3)
     
         plt.imsave("./out/z_rec"+str(j).zfill(2)+".png",frame[bb[2]+bb[5]//2])
-        plt.imsave("./out/x_rec"+str(j).zfill(2)+".png",frame.T[bb[2]+bb[5]//2].T)
-        plt.imsave("./out/y_rec"+str(j).zfill(2)+".png",np.transpose(frame,axes=(1,2,0))[bb[2]+bb[5]//2].T)
+        plt.imsave("./out/x_rec"+str(j).zfill(2)+".png",np.transpose(frame,axes=(2,0,1))[bb[0]+bb[3]//2])
+        plt.imsave("./out/y_rec"+str(j).zfill(2)+".png",np.transpose(frame,axes=(1,2,0))[bb[1]+bb[4]//2].T)
     
     #del current_rec
 #%%
