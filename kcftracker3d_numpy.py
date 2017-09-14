@@ -115,23 +115,23 @@ class KCFTracker:
 
     def subPixelPeak(self, left, center, right):
         divisor = 2*center - right - left   #float
-        return (0 if abs(divisor)<1e-3 else 0.5*(right-left)/divisor)
+        return (0 if abs(divisor)<1e-3 else 0.5*(right-left)/float(divisor))
 
     def createHanningMats(self):
         hann3t, hann2t, hann1t = np.ogrid[0:self.size_patch[0],
                                           0:self.size_patch[1],
                                           0:self.size_patch[2]]
 
-        hann1t = 0.5 * (1 - np.cos(2*np.pi*hann1t/(self.size_patch[2]-1)))
-        hann2t = 0.5 * (1 - np.cos(2*np.pi*hann2t/(self.size_patch[1]-1)))
-        hann3t = 0.5 * (1 - np.cos(2*np.pi*hann3t/(self.size_patch[0]-1)))
+        hann1t = 0.5 * (1 - np.cos(2*np.pi*hann1t/(self.size_patch[2]-1.)))
+        hann2t = 0.5 * (1 - np.cos(2*np.pi*hann2t/(self.size_patch[1]-1.)))
+        hann3t = 0.5 * (1 - np.cos(2*np.pi*hann3t/(self.size_patch[0]-1.)))
         hann3d = hann3t * hann2t * hann1t
 
         self.hann = hann3d
         self.hann = self.hann.astype(np.float32)
 
     def createGaussianPeak(self, sizez, sizey, sizex):
-        szh, syh, sxh = sizez/2, sizey/2, sizex/2
+        szh, syh, sxh = sizez/2., sizey/2., sizex/2.
         output_sigma = np.sqrt(sizex*sizey*sizez) / self.padding * self.output_sigma_factor
         mult = -0.5 / (output_sigma*output_sigma)
         z, y, x = np.ogrid[0:sizez, 0:sizey, 0:sizex]
@@ -145,7 +145,7 @@ class KCFTracker:
         c = np.real(c)
         c = rearrange(c)
 
-        d = (np.sum(x1*x1) + np.sum(x2*x2) - 2.0*c) / (self.size_patch[0]*self.size_patch[1])#*self.size_patch[2])
+        d = (np.sum(x1*x1) + np.sum(x2*x2) - 2.0*c) / float(self.size_patch[0]*self.size_patch[1])#*self.size_patch[2])
 
         d = d * (d>=0)
         d = np.exp(-d / (self.sigma*self.sigma))
@@ -154,9 +154,9 @@ class KCFTracker:
 
     def getFeatures(self, image, inithann, scale_adjust=1.0):
         extracted_roi = [0,0,0,0,0,0]   #[int,int,int,int]
-        cx = self._roi[0] + self._roi[3]/2  #float
-        cy = self._roi[1] + self._roi[4]/2  #float
-        cz = self._roi[2] + self._roi[5]/2  #float
+        cx = self._roi[0] + self._roi[3]/2.  #float
+        cy = self._roi[1] + self._roi[4]/2.  #float
+        cz = self._roi[2] + self._roi[5]/2.  #float
 
         if(inithann):
             padded_w = self._roi[3] * self.padding
@@ -187,9 +187,9 @@ class KCFTracker:
         extracted_roi[3] = int(scale_adjust * self._scale * self._tmpl_sz[0])
         extracted_roi[4] = int(scale_adjust * self._scale * self._tmpl_sz[1])
         extracted_roi[5] = int(scale_adjust * self._scale * self._tmpl_sz[2])
-        extracted_roi[0] = int(cx - extracted_roi[3]/2)
-        extracted_roi[1] = int(cy - extracted_roi[4]/2)
-        extracted_roi[2] = int(cz - extracted_roi[5]/2)
+        extracted_roi[0] = int(cx - extracted_roi[3]/2.)
+        extracted_roi[1] = int(cy - extracted_roi[4]/2.)
+        extracted_roi[2] = int(cz - extracted_roi[5]/2.)
 
         z = subwindow(image, extracted_roi)
         if(z.shape[2]!=self._tmpl_sz[0] or z.shape[1]!=self._tmpl_sz[1] or z.shape[0]!=self._tmpl_sz[2]):

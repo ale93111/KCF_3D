@@ -54,7 +54,7 @@ tracker = kcftracker3d_numpy.KCFTracker(False, False, False)
 tracker.padding = 2.5   # extra area surrounding the target
 tracker.output_sigma_factor = 0.125   # bandwidth of gaussian target
 tracker.sigma = 0.05
-tracker.interp_factor = 0.0
+#tracker.interp_factor = 0.0
 tracker.init(bbox, rec001)
 boxlist = [bbox]
 #%%
