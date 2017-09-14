@@ -24,30 +24,32 @@ def drawbox(volume,bbox,width=1):
                 
     return res
 
-path = '/home/alessandro/sohpc/'
+path = ''#'/home/alessandro/sohpc/'
 #%%
-rec001 = np.load(path+"real/rec013_ims.npy")
-rec002 = np.load(path+"real/rec014_ims.npy")
-rec003 = np.load(path+"real/rec015_ims.npy")
-rec004 = np.load(path+"real/rec016_ims.npy")
-rec005 = np.load(path+"real/rec017_ims.npy")
+rec001 = np.load(path+"./rec013_ims.npy")
+rec002 = np.load(path+"./rec014_ims.npy")
+rec003 = np.load(path+"./rec015_ims.npy")
+rec004 = np.load(path+"./rec016_ims.npy")
+rec005 = np.load(path+"./rec017_ims.npy")
 #rec003 = np.load(path+"real/rec003.npy")
 #%%
-bbox = np.array([258.0, 288.0, 239.0, 40.0, 40.0, 26.0],dtype=np.int64)
+bbox = np.array([288.0, 311.0, 498.0, 40.0, 40.0, 39.0],dtype=np.int64)
+#bbox = np.array([288.0, 311.0, 478.0, 40.0, 40.0, 39.0],dtype=np.int64)
+#bbox = np.array([258.0, 288.0, 239.0, 40.0, 40.0, 26.0],dtype=np.int64)
 #bbox = np.array([180.0, 295.0, 238.0, 29.0, 29.0, 24.0],dtype=np.int64)
 #bbox = np.array([180.0, 295.0, 238.0, 29.0, 29.0, 24.0],dtype=np.float64)
 #bbox = bbox/2
 #bbox = np.array(bbox,dtype=np.int64)
 
 print(bbox)
-#%%
+
 plt.imshow(rec001[bbox[2]+bbox[5]//2,bbox[1]:bbox[1]+bbox[4],bbox[0]:bbox[0]+bbox[3]])
 #%%
 tracker = kcftracker3d_numpy.KCFTracker(False, False, False)
 #tracker.lambdar = 0.0001   # regularization
-tracker.padding = 1.5   # extra area surrounding the target
+tracker.padding = 3.5   # extra area surrounding the target
 tracker.output_sigma_factor = 0.025   # bandwidth of gaussian target
-tracker.sigma = 0.005
+tracker.sigma = 0.2
 tracker.interp_factor = 0.0
 tracker.init(bbox, rec001)
 boxlist = [bbox]
